@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>cadastrar cliente</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+
+
+
+<!-- MENU -->
+<nav id="menu"></nav>
+<script type="text/javascript" src="scripts.js"></script>
+
+<!-- FORMULARIO -->
+<h1 class="tit">Cadastrar Cliente</h1>
+<form id="newclient" method="POST">
+    <input name="name" id="name" type="text" placeholder="Nome" required>
+    <br><br>
+    <input name="address" id="address" type="text" placeholder="Endereço" required>
+    <br><br>
+    <input class="phone" maxlength="15" name="phone" id="phone" type="text" placeholder="Telefone" required>
+    <br><br>
+    <input name="cpf" maxlength="14" id="cpf" type="text" placeholder="CPF">
+    <br><br>
+</form>
+
+<br><br>
+
+<button id="b">Enviar</button>
+
+<div id="result"></div>
+
+
+<!-- SCRIPTS -->
+<script type="text/javascript" src="MooTools-Core-1.5.2.js"></script>
+<script type="text/javascript">
+    
+    
+    
+
+    //AJAX
+    var b = $$('#b');
+    var myElement = $$('#result');
+    var myRequest = new Request({
+        url: 'http://localhost:8080/TesteJanio/rest/client/new',
+        method: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        onRequest: function(){
+            myElement.set('text', 'loading...');
+        },
+        onSuccess: function(responseText){
+        	console.log('success');
+            myElement.set('text', responseText);
+        },
+        onFailure: function(){
+            myElement.set('text', 'Erro ao Conectar');
+        }
+    });
+
+    // send AJAX
+    b.addEvent('click', function(){
+    	
+    	//DADOS PARA ENVIO
+        var data = {
+
+            model : "client",
+            action : "new",
+            parameters : {
+                name : document.getElementById('name').value,
+                address : document.getElementById('address').value,
+                phone : document.getElementById('phone').value,
+                cpf : document.getElementById('cpf').value
+            }
+        };
+    	
+        //debug
+    	console.log(data);
+    	
+        //converte se necessário
+    	//data = JSON.stringify(data)
+        myRequest.send(data);
+    });
+
+</script>
+</body>
+</html>

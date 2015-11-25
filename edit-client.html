@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste</title>
+    <meta charset="UTF-8" />
+</head>
+<body>
+
+
+<!-- MENU -->
+<nav id="menu"></nav>
+<script type="text/javascript" src="scripts.js"></script>
+
+
+<!-- FORMULARIO -->
+<!-- OBS:
+        Já inserir os dados nos campos para alterar
+-->
+<h1 class="tit">Editar Cliente</h1>
+<form id="newclient" method="POST">
+    <label>Nome</label>
+    <input name="name" id="name" type="text" placeholder="Inserir Nome" required>
+    <br><br>
+    <label>Endereço</label>
+    <input name="address" id="address" type="text" placeholder="Inserir Endereço" required>
+    <br><br>
+    <label>Telefone</label>
+    <input class="phone" maxlength="15" name="phone" id="phone" type="text" placeholder="Inserir Telefone" required>
+    <br><br>
+    <label>CNPJ</label>
+    <input name="cpf" maxlength="14" id="cnpj" type="text" placeholder="Inserir CPF">
+    <br><br>
+    <button id="b">Enviar</button>
+</form>
+<div class="result"></div>
+
+
+<!-- SCRIPTS -->
+<script type="text/javascript" src="MooTools-Core-1.5.2.js"></script>
+<script type="text/javascript">
+
+    //AJAX ENVIAR DADOS
+    var b = $$('#b');
+    var myElement = $$('#result');
+    var myRequest = new Request({
+        url: 'webservice/my-link.xxx',
+        method: 'post',
+        onRequest: function(){
+            myElement.set('text', 'loading...');
+        },
+        onSuccess: function(responseText){
+            console.log(responseText);
+            myElement.set('text', responseText);
+        },
+        onFailure: function(){
+            myElement.set('text', 'Erro ao Conectar');
+        }
+    });
+
+    // send AJAX
+    b.addEvent('click', function(){
+
+        //DADOS PARA ENVIO
+        var data = {
+
+            model : "client",
+            action : "new",
+            parameters : {
+                name : document.getElementById('name').value,
+                address : document.getElementById('address').value,
+                phone : document.getElementById('phone').value,
+                cpf : document.getElementById('cpf').value
+            }
+        };
+
+        //push
+        myRequest.send(data);
+    });
+
+</script>
+</body>
+</html>
